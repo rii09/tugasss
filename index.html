@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>for you pookie</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<style>
+@font-face {
+    font-family: 'Minecraft';
+    src: url('/Minecraft.ttf') format('truetype');
+}
+
+body {
+    background: linear-gradient(-45deg, #fff0f5, #ffd6e0, #ffb6c1, #ffe4ec);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.pixel-font {
+    font-family: 'Minecraft', monospace !important;
+}
+
+.neu-button {
+    background: linear-gradient(145deg, #ffb6c1, #ff69b4) !important;
+    border-radius: 50px !important;
+    color: #fff !important;
+    font-size: 18px !important;
+    padding: 15px 40px !important;
+    transition: all 0.3s ease-in-out;
+    border: none !important;
+}
+
+.neu-button:hover {
+    transform: scale(1.05);
+}
+
+.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+</style>
+</head>
+
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState } = React;
+
+function App() {
+    const [step, setStep] = useState("start");
+    const [noCount, setNoCount] = useState(0);
+
+    const handleNo = () => {
+        if (noCount >= 2) return;
+        setNoCount(prev => prev + 1);
+        setStep("guilt");
+    };
+
+    const noDisabled = noCount >= 2;
+    const yesDisabled = noCount < 2; // YES TERKUNCI SAMPAI NO 2X
+
+    if (step === "yes") {
+        return (
+            <main className="min-h-screen flex flex-col items-center justify-center p-4 text-center relative overflow-hidden">
+                <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover opacity-50" style={{ mixBlendMode: "screen" }}>
+                    <source src="/petals.mp4" type="video/mp4" />
+                </video>
+
+                <img src="/eminem.png" className="w-80 md:w-96 rounded-2xl mb-10 relative z-10 shadow-lg" />
+
+                <h3 className="text-2xl md:text-4xl font-bold text-[#d63384] pixel-font relative z-10">
+                    I knew it, you are literally obsessed with me 😌💗
+                </h3>
+            </main>
+        );
+    }
+
+    if (step === "guilt") {
+        return (
+            <main className="min-h-screen flex flex-col items-center justify-center p-4 text-center">
+                <h1 className="text-4xl md:text-6xl font-bold text-[#d63384] pixel-font mb-6">
+                    tega banget...
+                </h1>
+
+                <button 
+                    onClick={() => setStep("start")} 
+                    className="neu-button font-bold text-2xl pixel-font"
+                >
+                    Coba Lagi
+                </button>
+            </main>
+        );
+    }
+
+    return (
+        <main className="min-h-screen flex flex-col items-center justify-center p-4 text-center relative overflow-hidden">
+            <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover opacity-50" style={{ mixBlendMode: "screen" }}>
+                <source src="/petals.mp4" type="video/mp4" />
+            </video>
+
+            <div className="relative z-10">
+                <h1 className="text-4xl md:text-6xl font-bold text-[#d63384] mb-6 pixel-font">
+                    do you still love me?
+                </h1>
+
+                <p className="text-[#e891b0] mb-10 pixel-font text-xl">
+                    be honest
+                </p>
+
+                <div className="flex gap-6 items-center justify-center">
+                    <button 
+                        onClick={() => !yesDisabled && setStep("yes")} 
+                        disabled={yesDisabled}
+                        className={`neu-button font-bold text-2xl pixel-font ${yesDisabled ? "disabled" : ""}`}
+                    >
+                        Yes
+                    </button>
+
+                    <button 
+                        onClick={handleNo} 
+                        disabled={noDisabled}
+                        className={`neu-button font-bold text-2xl pixel-font ${noDisabled ? "disabled" : ""}`}
+                    >
+                        No
+                    </button>
+                </div>
+
+                {noDisabled && (
+                    <p className="mt-6 text-[#d63384] pixel-font">
+                        sekarang kamu cuma punya satu pilihan 😌
+                    </p>
+                )}
+            </div>
+        </main>
+    );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+</script>
+
+</body>
+</html>

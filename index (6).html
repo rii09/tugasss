@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>for you pookie</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        @font-face {
+            font-family: 'Minecraft';
+            src: url('Minecraft.ttf') format('truetype');
+        }
+
+        body {
+            background: linear-gradient(-45deg, #fff0f5, #ffd6e0, #ffb6c1, #ffe4ec);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Supaya tombol ga kabur keluar layar */
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .pixel-font {
+            font-family: 'Minecraft', 'Courier New', monospace !important;
+        }
+
+        .neu-button {
+            background: linear-gradient(145deg, #ffb6c1, #ff69b4) !important;
+            border-radius: 50px !important;
+            color: #fff !important;
+            cursor: pointer;
+            font-size: 18px !important;
+            padding: 15px 40px !important;
+            transition: all 0.2s ease-out;
+            border: none !important;
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
+            white-space: nowrap;
+        }
+
+.video-bg {
+    position: fixed;     
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;    
+    z-index: -1;          
+    opacity: 0.7;         
+    mix-blend-mode: screen;
+}
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+const { useState } = React;
+
+function PookieApp() {
+    const [isAccepted, setIsAccepted] = useState(false);
+    const [yesStyle, setYesStyle] = useState({ position: 'relative' });
+    const [escapeCount, setEscapeCount] = useState(0);
+    const [yesDisabled, setYesDisabled] = useState(false);
+
+    const escapeYes = () => {
+        if (escapeCount >= 2) {
+            setYesDisabled(true); // percobaan ke-3 langsung disable
+            return;
+        }
+
+        const randomX = Math.floor(Math.random() * (window.innerWidth - 150));
+        const randomY = Math.floor(Math.random() * (window.innerHeight - 100));
+
+        setYesStyle({
+            position: 'fixed',
+            left: `${randomX}px`,
+            top: `${randomY}px`,
+            zIndex: 999
+        });
+
+        setEscapeCount(escapeCount + 1);
+    };
+
+    if (isAccepted) {
+        return (
+            <main className="min-h-screen flex flex-col items-center justify-center p-4 text-center relative">
+                <video autoPlay loop muted playsInline className="video-bg">
+                    <source src="petals.mp4" type="video/mp4" />
+                </video>
+
+                <h3 className="text-3xl font-bold text-[#d63384] pixel-font relative z-10">
+                    Jadi… kamu benar-benar pilih “No”?
+
+Hebat.
+Dalam satu detik, kamu berhasil membuat
+matahari terasa redup,
+angin berhenti berhembus,
+dan jantungku lupa cara berdetak dengan normal.
+
+Aku sudah menyiapkan seluruh skenario bahagia—
+tawa kecil, momen manis,
+bahkan masa depan yang terlalu jauh untuk sekadar dibayangkan.
+
+Tapi ternyata…
+semua itu kalah sama satu sentuhan jarimu.
+
+Sekarang semesta berjalan seperti biasa,
+orang-orang tetap hidup tanpa tahu apa yang terjadi.
+
+Tapi di sini…
+di titik kecil tempat aku berdiri,
+satu dunia runtuh tanpa suara.
+
+Dan penyebabnya sederhana.
+Kamu.
+Memilih.
+“No.”
+                </h3>
+            </main>
+        );
+    }
+
+    return (
+        <main className="min-h-screen flex flex-col items-center justify-center p-4 text-center relative">
+            <video autoPlay loop muted playsInline className="video-bg">
+                <source src="petals.mp4" type="video/mp4" />
+            </video>
+
+            <div className="relative z-10">
+                <h1 className="text-4xl md:text-6xl font-bold text-[#d63384] mb-4 pixel-font">
+                    do you love me?
+                </h1>
+                <p className="text-[#e891b0] mb-16 pixel-font text-xl">
+                    try to click Yes if you can~
+                </p>
+
+                <div className="flex flex-row gap-8 items-center justify-center h-20">
+                    
+                    <button 
+                        onMouseEnter={escapeYes}
+                        onClick={escapeYes}
+                        disabled={yesDisabled}
+                        style={yesStyle}
+                        className={`neu-button font-bold text-2xl pixel-font ${yesDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
+                    >
+                        Yes
+                    </button>
+
+                    <button 
+                        onClick={() => setIsAccepted(true)}
+                        className="neu-button font-bold text-2xl pixel-font"
+                    >
+                        No
+                    </button>
+                </div>
+            </div>
+        </main>
+    );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<PookieApp />);
+</script>
+</body>
+</html>
